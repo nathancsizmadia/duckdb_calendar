@@ -36,7 +36,7 @@ SELECT
   LAST_DAY(date_key) AS last_day_of_month,
   CAST(YEAR(date_key) || QUARTER(date_key) AS INT) AS quarter_key,
   QUARTER(date_key)::UINT8 AS quarter_of_year,
-  CAST(date_key - DATE_TRUNC('Quarter', date_key) + 1 AS INT)::UINT8 AS day_of_quarter,
+  (DATEDIFF('day', DATE_TRUNC('quarter', date_key::TIMESTAMP), date_key) + 1)::UINT8 AS day_of_quarter,
   ('Q' || QUARTER(date_key)) AS quarter_desc_short,
   ('Quarter ' || QUARTER(date_key)) AS quarter_desc,
   DATE_TRUNC('quarter', date_key) AS first_day_of_quarter,
