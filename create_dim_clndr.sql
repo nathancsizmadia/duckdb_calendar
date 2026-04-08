@@ -18,7 +18,7 @@ SELECT
   DAYNAME(date_key) AS day_name,
   LEFT(DAYNAME(date_key),3) AS day_name_short,
   DATE_TRUNC('week', date_key) AS first_day_of_week,
-  DATE_TRUNC('week', date_key) + 6 AS last_day_of_week,
+  DATE_TRUNC('week', date_key) + INTERVAL 6 DAY AS last_day_of_week,
   YEAR(date_key) || RIGHT('0' || MONTH(date_key), 2) AS month_key,
   DAYOFYEAR(date_key)::UINT16 AS day_of_year, 
   MONTH(date_key)::UINT8 AS month_of_year,
@@ -43,7 +43,7 @@ SELECT
   LAST_DAY(DATE_TRUNC('quarter', date_key) + INTERVAL 2 MONTH) as last_day_of_quarter,
   CAST(YEAR(date_key) AS INT) AS year_key,
   DATE_TRUNC('Year', date_key) AS first_day_of_year,
-  (DATE_TRUNC('Year', date_key) - 1 + INTERVAL 1 YEAR)::DATE AS last_day_of_year,
+  (DATE_TRUNC('Year', date_key) - INTERVAL 1 DAY + INTERVAL 1 YEAR)::DATE AS last_day_of_year,
   ROW_NUMBER() OVER (PARTITION BY YEAR(date_key), MONTH(date_key), DAYOFWEEK(date_key) ORDER BY date_key)::UINT8 AS ordinal_weekday_of_month,
   (CASE WHEN weekday(date_key) IN (0,6) THEN 1 ELSE 0 END)::UINT8 AS is_weekend
 FROM generate_date;
